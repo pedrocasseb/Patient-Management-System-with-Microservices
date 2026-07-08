@@ -1,6 +1,6 @@
 package com.pm.patientservice.exception;
 
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -24,6 +25,17 @@ public class GlobalExceptionHandler {
                         errors.put(error.getField(), error.getDefaultMessage())
                 );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+        return ResponseEntity.badRequest().body(errors);
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleEmailAlredyExists(
+            EmailAlreadyExistsException ex
+    ) {
+        log.warn("Email address already exists {}", ex.getMessage());
+
+        Map<String, String> errors = new HashMap<>();
+        errors.put("message", "Email address already exists");
+        return ResponseEntity.badRequest().body(errors);
     }
 }
