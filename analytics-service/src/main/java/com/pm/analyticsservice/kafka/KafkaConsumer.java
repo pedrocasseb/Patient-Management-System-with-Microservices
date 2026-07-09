@@ -13,7 +13,7 @@ public class KafkaConsumer {
     public void consumeEvent(byte[] event) {
         try {
             PatientEvent patientEvent = PatientEvent.parseFrom(event);
-            log.info("Received patient event: [PatientId={}, PatientName={}, PatientEmail{}]", patientEvent.getPatientId(), patientEvent.getName(), patientEvent.getEmail());
+            log.info("Received patient event: [PatientId={}, PatientName={}, PatientEmail={}]", patientEvent.getPatientId(), patientEvent.getName(), patientEvent.getEmail());
         } catch (InvalidProtocolBufferException e) {
             log.error("Error deserializing event {}", e.getMessage());
         }
